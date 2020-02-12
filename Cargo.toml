@@ -4,5 +4,5 @@ version = "0.1.0"
 authors = ["Niko Matsakis <niko@alum.mit.edu>"]
 
 [dependencies]
-lalrpop-intern = "0.12"
-itertools = "0.6.0"
+lalrpop-intern = "0.15.1"
+itertools = "0.8.2"
