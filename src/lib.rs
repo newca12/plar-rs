@@ -1,5 +1,4 @@
 #![cfg_attr(not(test), allow(dead_code))]
-#![feature(inclusive_range_syntax)]
 #![feature(fn_traits)]
 #![feature(unboxed_closures)]
 
