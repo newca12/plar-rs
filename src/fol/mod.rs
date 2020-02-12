@@ -50,7 +50,7 @@ impl Domain {
             }
         } else {
             IteratorObject::new(
-                (0...n)
+                (0..=n)
                     .flat_map(move |k| {
                         self.ground_terms(k)
                             .cartesian_product(self.ground_tuples(n - k, arity - 1)
