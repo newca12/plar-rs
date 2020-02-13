@@ -4,7 +4,7 @@ use lalrpop_intern::{intern, InternedString};
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Proposition {
-    name: InternedString
+    name: InternedString,
 }
 
 pub fn prop(s: &'static str) -> Proposition {

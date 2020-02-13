@@ -1,8 +1,8 @@
 #![cfg(test)]
 
-use itertools::Itertools;
-use super::PropLogic;
 use super::proposition::{prop, Proposition};
+use super::PropLogic;
+use itertools::Itertools;
 
 macro_rules! valuation {
     ($($f:ident -> $v:expr),*) => {
@@ -20,7 +20,7 @@ fn eval_basics() {
     let p = prop("p");
     let q = prop("q");
     let r = prop("r");
-    let f = formula!((implies (and [p] [q]) (and [q] [r])));
+    let f = formula!((implies(and[p][q])(and[q][r])));
     assert!(f.eval(valuation!(p -> true, q -> false, r -> true)));
     assert!(!f.eval(valuation!(p -> true, q -> true, r -> false)));
 }
@@ -52,13 +52,17 @@ fn nnf_page53() {
     let q = prop("q");
     let r = prop("r");
     let s = prop("s");
-    let fm = formula!(iff (iff [p] [q]) (not (implies [r] [s])));
+    let fm = formula!(iff(iff[p][q])(not(implies[r][s])));
     let fm1 = fm.nnf();
-    assert_eq!(format!("{:?}", fm1).split_whitespace().join(" "), "
+    assert_eq!(
+        format!("{:?}", fm1).split_whitespace().join(" "),
+        "
                (or (and (or (and [p] [q]) (and (not [p]) (not [q])))
                         (and [r] (not [s])))
                    (and (or (and [p] (not [q])) (and (not [p]) [q]))
                         (or (not [r]) [s])))
-    ".split_whitespace().join(" "));
+    "
+        .split_whitespace()
+        .join(" ")
+    );
 }
-

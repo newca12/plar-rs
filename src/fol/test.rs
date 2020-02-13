@@ -1,9 +1,9 @@
 #![cfg(test)]
 #![allow(non_snake_case)]
 
-use lalrpop_intern::intern;
-use super::*;
 use super::Term::*;
+use super::*;
+use lalrpop_intern::intern;
 
 #[test]
 fn ground_terms_zero() {
@@ -17,12 +17,13 @@ fn ground_terms_zero() {
     };
 
     let terms: Vec<_> = domain.ground_terms(0).collect();
-    assert_eq!(format!("{:?}", terms),
-               format!("[A, B]"));
+    assert_eq!(format!("{:?}", terms), format!("[A, B]"));
 
     let terms: Vec<_> = domain.ground_terms(1).collect();
-    assert_eq!(format!("{:?}", terms),
-               format!("[F(A, A), F(B, A), F(A, B), F(B, B), G(A), G(B)]"));
+    assert_eq!(
+        format!("{:?}", terms),
+        format!("[F(A, A), F(B, A), F(A, B), F(B, B), G(A), G(B)]")
+    );
 
     let terms: Vec<_> = domain.ground_terms(2).collect();
     assert_eq!(format!("{:?}", terms),

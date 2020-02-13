@@ -1,6 +1,6 @@
-use std::fmt::{Debug, Formatter, Result};
-use itertools::Itertools;
 use super::*;
+use itertools::Itertools;
+use std::fmt::{Debug, Formatter, Result};
 
 impl Debug for Term {
     fn fmt(&self, fmt: &mut Formatter) -> Result {

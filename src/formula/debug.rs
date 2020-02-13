@@ -1,5 +1,5 @@
-use std::fmt::{Debug, Formatter, Error};
 use super::*;
+use std::fmt::{Debug, Error, Formatter};
 
 impl<T: Debug> Debug for Formula<T> {
     fn fmt(&self, fmt: &mut Formatter) -> Result<(), Error> {

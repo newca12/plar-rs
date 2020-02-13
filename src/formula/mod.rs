@@ -10,21 +10,21 @@ mod debug;
 
 #[derive(PartialOrd, Ord, PartialEq, Eq)]
 pub struct Formula<T> {
-    pub kind: Arc<FormulaKind<T>>
+    pub kind: Arc<FormulaKind<T>>,
 }
 
 impl<T> Formula<T> {
     pub fn is_false(&self) -> bool {
         match *self.kind {
             FormulaKind::False => true,
-            _ => false
+            _ => false,
         }
     }
 
     pub fn is_true(&self) -> bool {
         match *self.kind {
             FormulaKind::True => true,
-            _ => false
+            _ => false,
         }
     }
 
@@ -34,7 +34,7 @@ impl<T> Formula<T> {
     pub fn is_negative(&self) -> bool {
         match *self.kind {
             FormulaKind::Not(_) => true,
-            _ => false
+            _ => false,
         }
     }
 
@@ -70,7 +70,9 @@ impl<T> Formula<T> {
     }
 
     pub fn with(kind: FormulaKind<T>) -> Self {
-        Formula { kind: Arc::new(kind) }
+        Formula {
+            kind: Arc::new(kind),
+        }
     }
 
     /// Maps atoms to other atoms.
@@ -82,10 +84,18 @@ impl<T> Formula<T> {
             FormulaKind::True => Formula::with(FormulaKind::True),
             FormulaKind::Atom(ref a) => f(a),
             FormulaKind::Not(ref a) => Formula::with(FormulaKind::Not(a.on_atoms(f))),
-            FormulaKind::Or(ref a, ref b) => Formula::with(FormulaKind::Or(a.on_atoms(f), b.on_atoms(f))),
-            FormulaKind::And(ref a, ref b) => Formula::with(FormulaKind::And(a.on_atoms(f), b.on_atoms(f))),
-            FormulaKind::Implies(ref a, ref b) => Formula::with(FormulaKind::Implies(a.on_atoms(f), b.on_atoms(f))),
-            FormulaKind::Iff(ref a, ref b) => Formula::with(FormulaKind::Iff(a.on_atoms(f), b.on_atoms(f))),
+            FormulaKind::Or(ref a, ref b) => {
+                Formula::with(FormulaKind::Or(a.on_atoms(f), b.on_atoms(f)))
+            }
+            FormulaKind::And(ref a, ref b) => {
+                Formula::with(FormulaKind::And(a.on_atoms(f), b.on_atoms(f)))
+            }
+            FormulaKind::Implies(ref a, ref b) => {
+                Formula::with(FormulaKind::Implies(a.on_atoms(f), b.on_atoms(f)))
+            }
+            FormulaKind::Iff(ref a, ref b) => {
+                Formula::with(FormulaKind::Iff(a.on_atoms(f), b.on_atoms(f)))
+            }
             FormulaKind::ForAll(n, ref b) => Formula::with(FormulaKind::ForAll(n, b.on_atoms(f))),
             FormulaKind::Exists(n, ref b) => Formula::with(FormulaKind::Exists(n, b.on_atoms(f))),
         }
@@ -101,14 +111,14 @@ impl<T> Formula<T> {
 
             FormulaKind::Atom(ref a) => f(a, u),
 
-            FormulaKind::ForAll(_, ref a) |
-            FormulaKind::Exists(_, ref a) |
-            FormulaKind::Not(ref a) => a.over_atoms(u, f),
+            FormulaKind::ForAll(_, ref a)
+            | FormulaKind::Exists(_, ref a)
+            | FormulaKind::Not(ref a) => a.over_atoms(u, f),
 
-            FormulaKind::Or(ref a, ref b) |
-            FormulaKind::And(ref a, ref b) |
-            FormulaKind::Implies(ref a, ref b) |
-            FormulaKind::Iff(ref a, ref b) => a.over_atoms(b.over_atoms(u, f), f),
+            FormulaKind::Or(ref a, ref b)
+            | FormulaKind::And(ref a, ref b)
+            | FormulaKind::Implies(ref a, ref b)
+            | FormulaKind::Iff(ref a, ref b) => a.over_atoms(b.over_atoms(u, f), f),
         }
     }
 
@@ -116,12 +126,10 @@ impl<T> Formula<T> {
     ///
     /// In the book, `atom_union`.
     pub fn atom_union<U: Ord>(&self, f: &mut dyn FnMut(&T) -> U) -> BTreeSet<U> {
-        self.over_atoms(
-            BTreeSet::new(),
-            &mut |atom, mut set| {
-                set.insert(f(atom));
-                set
-            })
+        self.over_atoms(BTreeSet::new(), &mut |atom, mut set| {
+            set.insert(f(atom));
+            set
+        })
     }
 
     /// Convert a formula into a vector of conjunctions.
@@ -145,7 +153,9 @@ impl<T> Formula<T> {
 
 impl<T> Clone for Formula<T> {
     fn clone(&self) -> Self {
-        Formula { kind: self.kind.clone() }
+        Formula {
+            kind: self.kind.clone(),
+        }
     }
 }
 
@@ -184,4 +194,3 @@ impl<T> FormulaKind<T> {
         }
     }
 }
-

@@ -2,8 +2,8 @@
 #![feature(fn_traits)]
 #![feature(unboxed_closures)]
 
-extern crate lalrpop_intern;
 extern crate itertools;
+extern crate lalrpop_intern;
 
 #[macro_use]
 mod formula;
@@ -12,5 +12,4 @@ mod prop;
 mod util;
 
 #[test]
-fn it_works() {
-}
+fn it_works() {}

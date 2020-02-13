@@ -23,8 +23,9 @@ impl<T> PropLogic<T> for Formula<T> {
             FormulaKind::And(ref a, ref b) => a.eval(v) && b.eval(v),
             FormulaKind::Implies(ref a, ref b) => !a.eval(v) || b.eval(v),
             FormulaKind::Iff(ref a, ref b) => a.eval(v) == b.eval(v),
-            FormulaKind::ForAll(..) |
-            FormulaKind::Exists(..) => panic!("forall/exists not present in prop logic"),
+            FormulaKind::ForAll(..) | FormulaKind::Exists(..) => {
+                panic!("forall/exists not present in prop logic")
+            }
         }
     }
 
@@ -55,14 +56,12 @@ impl<T> PropLogic<T> for Formula<T> {
 
             FormulaKind::Atom(_) => self.clone(),
 
-            FormulaKind::Not(ref f) => {
-                match *f.kind {
-                    FormulaKind::False => formula!(true),
-                    FormulaKind::True => formula!(false),
-                    FormulaKind::Not(ref g) => g.clone(),
-                    _ => self.clone(),
-                }
-            }
+            FormulaKind::Not(ref f) => match *f.kind {
+                FormulaKind::False => formula!(true),
+                FormulaKind::True => formula!(false),
+                FormulaKind::Not(ref g) => g.clone(),
+                _ => self.clone(),
+            },
 
             FormulaKind::And(ref f, ref g) => {
                 if f.is_false() || g.is_false() {
@@ -114,8 +113,9 @@ impl<T> PropLogic<T> for Formula<T> {
                 }
             }
 
-            FormulaKind::ForAll(..) |
-            FormulaKind::Exists(..) => panic!("forall/exists not present in prop logic"),
+            FormulaKind::ForAll(..) | FormulaKind::Exists(..) => {
+                panic!("forall/exists not present in prop logic")
+            }
         }
     }
 
@@ -127,24 +127,16 @@ impl<T> PropLogic<T> for Formula<T> {
             FormulaKind::Iff(ref f, ref g) => {
                 formula!(or (and {f.nnf1()} {g.nnf1()}) (and {f.not().nnf1()} {g.not().nnf1()}))
             }
-            FormulaKind::Not(ref f) => {
-                match *f.kind {
-                    FormulaKind::Not(ref g) => g.nnf1(),
-                    FormulaKind::And(ref p, ref q) => {
-                        formula!(or {p.not().nnf1()} {q.not().nnf1()})
-                    }
-                    FormulaKind::Or(ref p, ref q) => {
-                        formula!(and {p.not().nnf1()} {q.not().nnf1()})
-                    }
-                    FormulaKind::Implies(ref p, ref q) => formula!(and {p.nnf1()} {q.not().nnf1()}),
-                    FormulaKind::Iff(ref p, ref q) => {
-                        formula!(or
+            FormulaKind::Not(ref f) => match *f.kind {
+                FormulaKind::Not(ref g) => g.nnf1(),
+                FormulaKind::And(ref p, ref q) => formula!(or {p.not().nnf1()} {q.not().nnf1()}),
+                FormulaKind::Or(ref p, ref q) => formula!(and {p.not().nnf1()} {q.not().nnf1()}),
+                FormulaKind::Implies(ref p, ref q) => formula!(and {p.nnf1()} {q.not().nnf1()}),
+                FormulaKind::Iff(ref p, ref q) => formula!(or
                                  (and {p.nnf1()} {q.not().nnf1()})
-                                 (and {p.not().nnf1()} {q.nnf1()}))
-                    }
-                    _ => self.clone(),
-                }
-            }
+                                 (and {p.not().nnf1()} {q.nnf1()})),
+                _ => self.clone(),
+            },
             _ => self.clone(),
         }
     }

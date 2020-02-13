@@ -21,13 +21,18 @@ use std::hash::Hash;
 //    }
 //}
 
-pub struct IteratorObject<'a, T: 'a> { obj: Box<dyn Iterator<Item=T> + 'a> }
+pub struct IteratorObject<'a, T: 'a> {
+    obj: Box<dyn Iterator<Item = T> + 'a>,
+}
 
 impl<'a, T> IteratorObject<'a, T> {
     pub fn new<U: 'a>(iter: U) -> IteratorObject<'a, T>
-        where U: Iterator<Item = T>
+    where
+        U: Iterator<Item = T>,
     {
-        IteratorObject { obj: Box::new(iter) }
+        IteratorObject {
+            obj: Box::new(iter),
+        }
     }
 }
 
@@ -39,30 +44,39 @@ impl<'a, T> Iterator for IteratorObject<'a, T> {
 }
 
 pub struct Substitution<N, F>
-    where N: Hash + Eq + Clone, F: Clone,
+where
+    N: Hash + Eq + Clone,
+    F: Clone,
 {
-    map: HashMap<N, F>
+    map: HashMap<N, F>,
 }
 
 impl<N, F> Substitution<N, F>
-    where N: Hash + Eq + Clone, F: Clone,
+where
+    N: Hash + Eq + Clone,
+    F: Clone,
 {
     pub fn new<'a, Ns, Fs>(keys: Ns, values: Fs) -> Self
-        where N: 'a,
-              F: 'a,
-              Ns: IntoIterator<Item = &'a N>,
-              Fs: IntoIterator<Item = &'a F>,
+    where
+        N: 'a,
+        F: 'a,
+        Ns: IntoIterator<Item = &'a N>,
+        Fs: IntoIterator<Item = &'a F>,
     {
         Substitution {
-            map: keys.into_iter().cloned()
-                     .zip(values.into_iter().cloned())
-                     .collect()
+            map: keys
+                .into_iter()
+                .cloned()
+                .zip(values.into_iter().cloned())
+                .collect(),
         }
     }
 }
 
 impl<'s, 'n, N, F> FnOnce<(&'n N,)> for &'s Substitution<N, F>
-    where N: Hash + Eq + Clone, F: Clone,
+where
+    N: Hash + Eq + Clone,
+    F: Clone,
 {
     type Output = Option<&'s F>;
 

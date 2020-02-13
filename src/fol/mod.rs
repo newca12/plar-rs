@@ -1,9 +1,9 @@
 use itertools::Itertools;
 use lalrpop_intern::InternedString;
 use std::collections::HashMap;
-use std::iter::{empty, once};
 use std::fmt::Debug;
 use std::io::Write;
+use std::iter::{empty, once};
 use util::{IteratorObject, Substitution};
 
 mod debug;
@@ -18,7 +18,7 @@ pub enum Term {
 #[derive(Clone, PartialEq, Eq)]
 pub struct Apply {
     name: InternedString,
-    terms: Vec<Term>
+    terms: Vec<Term>,
 }
 
 pub struct Domain {
@@ -31,13 +31,10 @@ impl Domain {
         if n == 0 {
             IteratorObject::new(self.constant_terms.iter().cloned())
         } else {
-            IteratorObject::new(
-                self.funcs
-                    .iter()
-                    .flat_map(move |(&name, &arity)| {
-                        self.ground_tuples(n - 1, arity)
-                            .map(move |terms| Term::Fn(Apply { name, terms }))
-                    }))
+            IteratorObject::new(self.funcs.iter().flat_map(move |(&name, &arity)| {
+                self.ground_tuples(n - 1, arity)
+                    .map(move |terms| Term::Fn(Apply { name, terms }))
+            }))
         }
     }
 
@@ -49,23 +46,21 @@ impl Domain {
                 IteratorObject::new(empty())
             }
         } else {
-            IteratorObject::new(
-                (0..=n)
-                    .flat_map(move |k| {
-                        self.ground_terms(k)
-                            .cartesian_product(self.ground_tuples(n - k, arity - 1)
-                                               .collect::<Vec<_>>())
-                            .map(move |(e, mut v)| {
-                                v.push(e);
-                                v
-                            })
-                    }))
+            IteratorObject::new((0..=n).flat_map(move |k| {
+                self.ground_terms(k)
+                    .cartesian_product(self.ground_tuples(n - k, arity - 1).collect::<Vec<_>>())
+                    .map(move |(e, mut v)| {
+                        v.push(e);
+                        v
+                    })
+            }))
         }
     }
 }
 
 struct HerbrandLoop<'d, F>
-    where F: Clone + Debug,
+where
+    F: Clone + Debug,
 {
     domain: &'d Domain,
     modification_fn: Box<dyn Fn(&Vec<F>, &Substitution<InternedString, Term>, &Vec<F>) -> Vec<F>>,
@@ -76,17 +71,19 @@ struct HerbrandLoop<'d, F>
 }
 
 impl<'d, F> HerbrandLoop<'d, F>
-    where F: Clone + Debug
+where
+    F: Clone + Debug,
 {
     fn execute(&mut self, formula: Vec<F>) -> Vec<Vec<Term>> {
         self.execute1(0, formula, vec![], IteratorObject::new(empty()))
     }
-    fn execute1(&mut self,
-                mut n: usize,
-                mut formula: Vec<F>,
-                mut tried: Vec<Vec<Term>>,
-                mut tuples: IteratorObject<'d, Vec<Term>>)
-                -> Vec<Vec<Term>> {
+    fn execute1(
+        &mut self,
+        mut n: usize,
+        mut formula: Vec<F>,
+        mut tried: Vec<Vec<Term>>,
+        mut tuples: IteratorObject<'d, Vec<Term>>,
+    ) -> Vec<Vec<Term>> {
         loop {
             write!(self.out, "{} ground instances tried, ", tried.len()).unwrap();
             write!(self.out, "{} items in list\n", formula.len()).unwrap();
