@@ -68,11 +68,11 @@ struct HerbrandLoop<'d, F>
     where F: Clone + Debug,
 {
     domain: &'d Domain,
-    modification_fn: Box<Fn(&Vec<F>, &Substitution<InternedString, Term>, &Vec<F>) -> Vec<F>>,
-    testing_fn: Box<Fn(&Vec<F>) -> bool>,
+    modification_fn: Box<dyn Fn(&Vec<F>, &Substitution<InternedString, Term>, &Vec<F>) -> Vec<F>>,
+    testing_fn: Box<dyn Fn(&Vec<F>) -> bool>,
     initial_formula: Vec<F>,
     free_variables: Vec<InternedString>,
-    out: &'d mut Write,
+    out: &'d mut dyn Write,
 }
 
 impl<'d, F> HerbrandLoop<'d, F>

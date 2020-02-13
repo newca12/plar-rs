@@ -76,7 +76,7 @@ impl<T> Formula<T> {
     /// Maps atoms to other atoms.
     ///
     /// In the book, `onatoms`.
-    pub fn on_atoms<U>(&self, f: &mut FnMut(&T) -> Formula<U>) -> Formula<U> {
+    pub fn on_atoms<U>(&self, f: &mut dyn FnMut(&T) -> Formula<U>) -> Formula<U> {
         match *self.kind {
             FormulaKind::False => Formula::with(FormulaKind::False),
             FormulaKind::True => Formula::with(FormulaKind::True),
@@ -94,7 +94,7 @@ impl<T> Formula<T> {
     /// Processes atoms sequentially, folding some state through.
     ///
     /// In the book, `overatoms`.
-    pub fn over_atoms<U>(&self, u: U, f: &mut FnMut(&T, U) -> U) -> U {
+    pub fn over_atoms<U>(&self, u: U, f: &mut dyn FnMut(&T, U) -> U) -> U {
         match *self.kind {
             FormulaKind::False => u,
             FormulaKind::True => u,
@@ -115,7 +115,7 @@ impl<T> Formula<T> {
     /// Applies `f()` to each atom, then unions together the results into a set.
     ///
     /// In the book, `atom_union`.
-    pub fn atom_union<U: Ord>(&self, f: &mut FnMut(&T) -> U) -> BTreeSet<U> {
+    pub fn atom_union<U: Ord>(&self, f: &mut dyn FnMut(&T) -> U) -> BTreeSet<U> {
         self.over_atoms(
             BTreeSet::new(),
             &mut |atom, mut set| {

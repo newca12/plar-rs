@@ -21,7 +21,7 @@ use std::hash::Hash;
 //    }
 //}
 
-pub struct IteratorObject<'a, T: 'a> { obj: Box<Iterator<Item=T> + 'a> }
+pub struct IteratorObject<'a, T: 'a> { obj: Box<dyn Iterator<Item=T> + 'a> }
 
 impl<'a, T> IteratorObject<'a, T> {
     pub fn new<U: 'a>(iter: U) -> IteratorObject<'a, T>

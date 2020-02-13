@@ -4,7 +4,7 @@ mod proposition;
 mod test;
 
 pub trait PropLogic<T> {
-    fn eval(&self, v: &mut FnMut(&T) -> bool) -> bool;
+    fn eval(&self, v: &mut dyn FnMut(&T) -> bool) -> bool;
     fn psimplify(&self) -> Formula<T>;
     fn psimplify1(&self) -> Formula<T>;
     fn nnf1(&self) -> Formula<T>;
@@ -13,7 +13,7 @@ pub trait PropLogic<T> {
 
 impl<T> PropLogic<T> for Formula<T> {
     /// eval for propositions, from 2.2
-    fn eval(&self, v: &mut FnMut(&T) -> bool) -> bool {
+    fn eval(&self, v: &mut dyn FnMut(&T) -> bool) -> bool {
         match *self.kind {
             FormulaKind::False => false,
             FormulaKind::True => true,
