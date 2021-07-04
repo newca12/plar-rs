@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use std::fmt::Debug;
 use std::io::Write;
 use std::iter::{empty, once};
-use util::{IteratorObject, Substitution};
+use crate::util::{IteratorObject, Substitution};
 
 mod debug;
 mod test;

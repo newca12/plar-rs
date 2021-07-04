@@ -1,4 +1,4 @@
-use formula::*;
+use crate::formula::*;
 
 mod proposition;
 mod test;
