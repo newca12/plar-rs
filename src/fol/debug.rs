@@ -1,5 +1,4 @@
 use super::*;
-use itertools::Itertools;
 use std::fmt::{Debug, Formatter, Result};
 
 impl Debug for Term {
@@ -15,7 +14,7 @@ impl Debug for Apply {
     fn fmt(&self, fmt: &mut Formatter) -> Result {
         let &Apply { name, ref terms } = self;
         write!(fmt, "{}(", name)?;
-        for t in terms.iter().map(Some).intersperse(None) {
+        for t in Iterator::intersperse(terms.iter().map(Some), None) {
             if let Some(term) = t {
                 write!(fmt, "{:?}", term)?;
             } else {

@@ -5,4 +5,4 @@ authors = ["Niko Matsakis <niko@alum.mit.edu>"]
 
 [dependencies]
 lalrpop-intern = "0.15.1"
-itertools = "0.8.2"
+itertools = "0.10.1"
