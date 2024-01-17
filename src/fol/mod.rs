@@ -1,10 +1,12 @@
+#![allow(clippy::type_complexity)]
+
+use crate::util::{IteratorObject, Substitution};
 use itertools::Itertools;
 use lalrpop_intern::InternedString;
 use std::collections::HashMap;
 use std::fmt::Debug;
 use std::io::Write;
 use std::iter::{empty, once};
-use crate::util::{IteratorObject, Substitution};
 
 mod debug;
 mod test;
@@ -86,7 +88,7 @@ where
     ) -> Vec<Vec<Term>> {
         loop {
             write!(self.out, "{} ground instances tried, ", tried.len()).unwrap();
-            write!(self.out, "{} items in list\n", formula.len()).unwrap();
+            writeln!(self.out, "{} items in list", formula.len()).unwrap();
             match tuples.next() {
                 None => {
                     tuples = self.domain.ground_tuples(n, self.free_variables.len());

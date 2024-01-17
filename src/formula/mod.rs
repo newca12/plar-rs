@@ -15,27 +15,18 @@ pub struct Formula<T> {
 
 impl<T> Formula<T> {
     pub fn is_false(&self) -> bool {
-        match *self.kind {
-            FormulaKind::False => true,
-            _ => false,
-        }
+        matches!(*self.kind, FormulaKind::False)
     }
 
     pub fn is_true(&self) -> bool {
-        match *self.kind {
-            FormulaKind::True => true,
-            _ => false,
-        }
+        matches!(*self.kind, FormulaKind::True)
     }
 
     /// Returns true if this is a `(not ..)` formula.
     ///
     /// `negative` in the book
     pub fn is_negative(&self) -> bool {
-        match *self.kind {
-            FormulaKind::Not(_) => true,
-            _ => false,
-        }
+        matches!(*self.kind, FormulaKind::Not(_))
     }
 
     /// Returns true if this is not a `(not ..)` formula. Useful for
