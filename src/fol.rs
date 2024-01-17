@@ -3,7 +3,7 @@
 use crate::util::{IteratorObject, Substitution};
 use itertools::Itertools;
 use lalrpop_intern::InternedString;
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::fmt::Debug;
 use std::io::Write;
 use std::iter::{empty, once};
@@ -25,7 +25,7 @@ pub struct Apply {
 
 pub struct Domain {
     constant_terms: Vec<Term>,
-    funcs: HashMap<InternedString, usize>,
+    funcs: BTreeMap<InternedString, usize>,
 }
 
 impl Domain {
