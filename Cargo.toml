@@ -2,7 +2,7 @@
 name = "plar"
 version = "0.1.0"
 authors = ["Niko Matsakis <niko@alum.mit.edu>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 lalrpop-intern = "0.15.1"
