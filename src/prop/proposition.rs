@@ -1,6 +1,6 @@
 use std::fmt;
 
-use lalrpop_intern::{intern, InternedString};
+use lalrpop_intern::{InternedString, intern};
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Proposition {

@@ -1,11 +1,11 @@
 #![cfg(test)]
 
-use super::proposition::{prop, Proposition};
 use super::PropLogic;
+use super::proposition::{Proposition, prop};
 use itertools::Itertools;
 
 macro_rules! valuation {
-    ($($f:ident -> $v:expr),*) => {
+    ($($f:ident -> $v:expr_2021),*) => {
         &mut |&x: &Proposition| -> bool {
             $(
                 if x == $f { return $v; }

@@ -29,7 +29,7 @@ pub struct Domain {
 }
 
 impl Domain {
-    pub fn ground_terms(&self, n: usize) -> IteratorObject<Term> {
+    pub fn ground_terms(&'_ self, n: usize) -> IteratorObject<'_, Term> {
         if n == 0 {
             IteratorObject::new(self.constant_terms.iter().cloned())
         } else {
@@ -40,7 +40,7 @@ impl Domain {
         }
     }
 
-    pub fn ground_tuples(&self, n: usize, arity: usize) -> IteratorObject<Vec<Term>> {
+    pub fn ground_tuples(&'_ self, n: usize, arity: usize) -> IteratorObject<'_, Vec<Term>> {
         if arity == 0 {
             if n == 0 {
                 IteratorObject::new(once(vec![]))

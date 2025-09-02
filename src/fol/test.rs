@@ -26,8 +26,10 @@ fn ground_terms_zero() {
     );
 
     let terms: Vec<_> = domain.ground_terms(2).collect();
-    assert_eq!(format!("{:?}", terms),
-               format!("[F(F(A, A), A), F(F(B, A), A), F(F(A, B), A), F(F(B, B), A), \
+    assert_eq!(
+        format!("{:?}", terms),
+        format!(
+            "[F(F(A, A), A), F(F(B, A), A), F(F(A, B), A), F(F(B, B), A), \
                          F(G(A), A), F(G(B), A), \
                          F(F(A, A), B), F(F(B, A), B), F(F(A, B), B), F(F(B, B), B), \
                          F(G(A), B), F(G(B), B), \
@@ -35,5 +37,7 @@ fn ground_terms_zero() {
                          F(B, F(A, B)), F(A, F(B, B)), F(B, F(B, B)), \
                          F(A, G(A)), F(B, G(A)), F(A, G(B)), F(B, G(B)), \
                          G(F(A, A)), G(F(B, A)), G(F(A, B)), G(F(B, B)), \
-                         G(G(A)), G(G(B))]"));
+                         G(G(A)), G(G(B))]"
+        )
+    );
 }

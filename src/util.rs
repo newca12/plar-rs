@@ -26,9 +26,9 @@ pub struct IteratorObject<'a, T: 'a> {
 }
 
 impl<'a, T> IteratorObject<'a, T> {
-    pub fn new<U: 'a>(iter: U) -> IteratorObject<'a, T>
+    pub fn new<U>(iter: U) -> IteratorObject<'a, T>
     where
-        U: Iterator<Item = T>,
+        U: Iterator<Item = T> + 'a,
     {
         IteratorObject {
             obj: Box::new(iter),
